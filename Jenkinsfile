@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Testing') {
             agent {
                 docker {
                     image 'node:alpine'
@@ -11,8 +11,8 @@ pipeline {
             }
             steps {
                 sh '''
-                    node --version
-                    npm --version
+                    npm install
+                    npm test
                 '''
             }
         }
