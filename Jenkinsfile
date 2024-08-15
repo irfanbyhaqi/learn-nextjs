@@ -1,12 +1,15 @@
 pipeline {
     agent any
+    environment {
+
+    }
+
     stages {
         stage('Testing') {
             agent {
                 docker {
                     image 'node:alpine'
                     reuseNode true
-                    args '-u root'
                 }
             }
             steps {
@@ -16,14 +19,35 @@ pipeline {
                 '''
             }
         }
-        stage('Test') {
+
+        stage('Build image') {
+            agent {
+                docker {
+                    image 'node:alpine'
+                    reuseNode true
+                }
+            }
             steps {
-                echo 'Testing..'
+                sh '''
+                   echo "Build image"
+                '''
             }
         }
-        stage('Deploy') {
+
+        stage('Deploy to ECR') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    reuseNode true
+                }
+            }
             steps {
-                echo 'Deploying....'
+                withCredentials([usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    sh '''
+                        aws --version
+                        aws s3 ls
+                    '''
+                }
             }
         }
     }
