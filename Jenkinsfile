@@ -49,7 +49,6 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
-                        yum install -y docker
                         aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username $AWS_ACCESS_KEY_ID --password-stdin $AWS_DOCKER_REGISTRY
                         docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION
                     '''
