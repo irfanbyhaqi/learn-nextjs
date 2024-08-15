@@ -30,6 +30,7 @@ pipeline {
                 docker {
                     image 'node:alpine'
                     reuseNode true
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
