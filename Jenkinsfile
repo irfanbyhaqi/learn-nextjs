@@ -25,10 +25,19 @@ pipeline {
         }
 
         stage('Build image') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    reuseNode true
+                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+                }
+            }
             steps {
-                sh '''
-                   docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
-                '''
+                withCredentials([usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) { 
+                    sh '''
+                    docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
+                    '''
+                }
             }
         }
 
