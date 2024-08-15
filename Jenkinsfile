@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18-alpine'
+            reuseNode true
+            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     environment {
         APP_VERSION = "1.0.$BUILD_NUMBER"
@@ -10,13 +16,6 @@ pipeline {
 
     stages {
         stage('Testing') {
-            agent {
-                docker {
-                    image 'node:alpine'
-                    reuseNode true
-                    args '-u root'
-                }
-            }
             steps {
                 sh '''
                     npm install
@@ -26,13 +25,6 @@ pipeline {
         }
 
         stage('Build image') {
-            agent {
-                docker {
-                    image 'node:alpine'
-                    reuseNode true
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             steps {
                 sh '''
                    docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
