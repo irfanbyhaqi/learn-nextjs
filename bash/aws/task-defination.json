@@ -10,9 +10,8 @@
       "cpu": 256,
       "portMappings": [
         {
-          "containerPort": 80,
-          "hostPort": 80,
-          "protocol": "tcp"
+          "containerPort": 3000,
+          "hostPort": 3000
         }
       ]
     }
