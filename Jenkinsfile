@@ -23,6 +23,13 @@ pipeline {
                 '''
             }
         }
+        stage('Install Docker CLI') {
+            steps {
+                sh '''
+                   
+                '''
+            }
+        }
         stage('Build image') {
             steps {
                 sh '''
