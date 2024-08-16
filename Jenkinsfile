@@ -74,6 +74,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     dir('bash'){
+                        sh "chmod +x create-ecs-service.sh"
                         sh "./create-ecs-service.sh -image $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION"
                     }
                 }

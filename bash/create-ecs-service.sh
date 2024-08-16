@@ -38,6 +38,11 @@ then
     | jq '.taskDefinition.revision')
 
     aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEFINITION_NAME:$LAST_REVISION
+    
+    echo "Service $SERVICE_NAME updated .."
+    aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME
+    echo "Service running"
+
 else
     echo "Creating cluster $CLUSTER_NAME"
 
