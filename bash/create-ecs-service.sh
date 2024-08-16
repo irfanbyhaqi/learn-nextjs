@@ -27,6 +27,17 @@ CLUSTER_EXIST=$(aws ecs describe-clusters --cluster $CLUSTER_NAME --query "clust
 if [ "$CLUSTER_EXIST" == "$CLUSTER_NAME" ] 
 then
     echo "Cluster $CLUSTER_NAME already exists"
+
+    sed -e "s|#CONTAINER_NAME#|$CONTAINER_NAME|g" \
+        -e "s|#CONTAINER_IMAGE#|$CONTAINER_IMAGE|g" \
+        -e "s|#TASK_DEFINITION_NAME#|$TASK_DEFINITION_NAME|g" \
+        -e "s|#TASK_ROLE_ARN#|$TASK_ROLE_ARN|g" aws/task-defination.json > /tmp/task-defination.json
+
+    LAST_REVISION=$(aws ecs register-task-definition \
+    --cli-input-json file:///tmp/task-defination.json \
+    | jq '.taskDefinition.revision')
+
+    aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEFINITION_NAME:$LAST_REVISION
 else
     echo "Creating cluster $CLUSTER_NAME"
 
