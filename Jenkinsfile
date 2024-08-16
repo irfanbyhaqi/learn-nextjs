@@ -30,7 +30,14 @@ pipeline {
                 '''
             }
         }
-        stage('Build image') {
+        stage('Build AWS CLI Image'){
+            steps {
+                sh '''
+                    docker build -t aws-cli ci/Dockerfile-aws-cli
+                '''
+            }
+        }
+        stage('Build APP image') {
             steps {
                 sh '''
                    docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
@@ -41,9 +48,9 @@ pipeline {
         stage('Deploy to ECR') {
             agent {
                 docker {
-                    image 'amazon/aws-cli'
+                    image 'aws-cli'
                     reuseNode true
-                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
+                    args "--entrypoint=''"
                 }
             }
             steps {
