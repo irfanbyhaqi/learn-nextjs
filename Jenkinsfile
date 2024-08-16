@@ -26,7 +26,7 @@ pipeline {
         stage('Install Docker CLI') {
             steps {
                 sh '''
-                   
+                    apk add --no-cache docker-cli
                 '''
             }
         }
