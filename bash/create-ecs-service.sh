@@ -7,17 +7,16 @@ TASK_DEFINITION_NAME="nextjs-task-definition"
 CONTAINER_NAME="nextjs-server"
 TASK_ROLE_ARN="arn:aws:iam::339712697129:role/ecsTaskExecutionRole" # Ganti dengan ARN role IAM Anda
 
-while getopts ":image:i:" opt; do
+while getopts ":i:" opt; do
   case ${opt} in
-    image ) CONTAINER_IMAGE=$OPTARG;;
     i ) CONTAINER_IMAGE=$OPTARG;;
-    \? ) echo "Usage: cmd [-image] [-i] <image>"
+    \? ) echo "Usage: cmd [-i] <image>"
         exit;;
   esac
 done
 
 if [ -z "$CONTAINER_IMAGE" ]; then
-  echo "Image are required. use '-image <image>'"
+  echo "Image are required. use '-i <image>'"
   exit 1
 fi
 
