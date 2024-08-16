@@ -33,7 +33,7 @@ pipeline {
         stage('Build AWS CLI Image'){
             steps {
                 sh '''
-                    docker build -t aws-cli ci/Dockerfile-aws-cli
+                    docker build -t aws-cli ./ci/Dockerfile-aws-cli
                 '''
             }
         }
