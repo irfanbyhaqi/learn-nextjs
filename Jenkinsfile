@@ -59,6 +59,26 @@ pipeline {
                         aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
                         docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION
                     '''
+                    dir('bash'){
+                        sh './create-ecs-service.sh'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to ECS') {
+            agent {
+                docker {
+                    image 'aws-cli'
+                    reuseNode true
+                    args "-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
+                }
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    dir('bash'){
+                        sh "./create-ecs-service.sh -image $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION"
+                    }
                 }
             }
         }
