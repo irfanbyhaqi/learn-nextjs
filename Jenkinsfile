@@ -40,7 +40,7 @@ pipeline {
         stage('Build APP image') {
             steps {
                 sh '''
-                   docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
+                   docker build --platform linux/x86_64 -t $AWS_DOCKER_REGISTRY/$APP_NAME:$APP_VERSION .
                 '''
             }
         }
