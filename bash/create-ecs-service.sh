@@ -79,7 +79,7 @@ else
     --task-definition $TASK_DEFINITION_ARN \
     --desired-count 1 \
     --launch-type FARGATE \
-    --network-configuration "awsvpcConfiguration={subnets=[subnet-0133dddee9c12078b],securityGroups=[sg-099b6e0a8c6211962],assignPublicIp=ENABLED}"
+    --network-configuration "awsvpcConfiguration={subnets=[subnet-0133dddee9c12078b],securityGroups=[sg-022931bf0da8a404f],assignPublicIp=ENABLED}"
 
     echo "Service '$SERVICE_NAME' berhasil dibuat."
     echo "Service menunggu running"
