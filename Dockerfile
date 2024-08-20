@@ -18,8 +18,8 @@ RUN npm run build && npm prune --production
 FROM node:18-alpine AS runner
 
 # install pm2
-RUN export NODE_OPTIONS=--openssl-legacy-provider
-RUN npm i -g pm2@latest
+#RUN export NODE_OPTIONS=--openssl-legacy-provider
+#RUN npm i -g pm2@latest
 
 # Set environment variables
 ENV NODE_ENV=production
@@ -40,4 +40,5 @@ RUN npm install --ignore-scripts
 EXPOSE 3000
 
 # Start the Next.js application
-CMD ["pm2", "start", "npm", "--name", "nextjs","--","start","--port","3000","--no-daemon"]
+# CMD ["pm2", "start", "npm", "--name", "nextjs","--","start","--port","3000","--no-daemon"]
+CMD ["npm","start"]
